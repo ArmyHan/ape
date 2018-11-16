@@ -55,16 +55,16 @@ class HomeState extends State<Home> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(9.0),
                 margin: EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                  color: Colors.grey[100],
                 ),
                 child: InkWell(
                   child: CircleAvatar(
                     backgroundImage: AssetImage(logoImage),
-                    radius: 25,
+                    radius: 29,
                   ),
                   onTap: () => debugPrint('center navigation press.'),
                 ),
