@@ -6,73 +6,109 @@ class Home extends StatefulWidget {
   State<StatefulWidget> createState() => HomeState();
 }
 
-class HomeState extends State<Home> {
+class HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  TabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.grey[100],
-        appBar: AppBar(
-          title: Text('APE'),
-          centerTitle: false,
-          elevation: 0.0,
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            tooltip: 'Tools',
-            onPressed: () => debugPrint('tools button press.'),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              tooltip: 'Search',
-              onPressed: () => debugPrint('search button press.'),
-            ),
-            IconButton(
-              icon: Icon(Icons.more_horiz),
-              tooltip: 'More',
-              onPressed: () => debugPrint('more button press.'),
-            ),
-          ],
-        ),
-        body: TabBarView(children: <Widget>[]),
-        bottomNavigationBar: Stack(
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: _buildAppBar(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: <Widget>[
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Material(
-                color: Colors.yellow,
-                child: TabBar(
-                  indicatorColor: Colors.grey,
-                  tabs: <Widget>[
-                    Tab(icon: Icon(Icons.home)),
-                    Tab(icon: Icon(Icons.notifications)),
-                    Tab(icon: Icon(Icons.person)),
-                  ],
-                ),
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                '阿猿',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: const EdgeInsets.all(9.0),
-                margin: EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(40)),
-                  color: Colors.grey[100],
-                ),
-                child: InkWell(
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(logoImage),
-                    radius: 29,
-                  ),
-                  onTap: () => debugPrint('center navigation press.'),
-                ),
+              accountEmail: Text('ayuan@dingding.com'),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    'https://avatars1.githubusercontent.com/u/35946000?s=400&u=56381a9606a5263b20b991db35fe6747bf9959a7&v=4'),
               ),
+              decoration: BoxDecoration(
+                  color: Colors.yellow[400],
+                  image: DecorationImage(
+                      image: AssetImage(headBackgroundImage),
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(Colors.grey[100].withOpacity(0.5), BlendMode.hardLight))),
             ),
+            ListTile(
+                title: Text('Messages', textAlign: TextAlign.right),
+                trailing: Icon(Icons.message, size: 22),
+                onTap: () => Navigator.pop(context)),
+            ListTile(
+                title: Text('Favorite', textAlign: TextAlign.right),
+                trailing: Icon(Icons.favorite, size: 22),
+                onTap: () => Navigator.pop(context)),
+            ListTile(
+                title: Text('Settings', textAlign: TextAlign.right),
+                trailing: Icon(Icons.settings, size: 22),
+                onTap: () => Navigator.pop(context)),
+            ListTile(
+                title: Text('Logout', textAlign: TextAlign.right),
+                trailing: Icon(Icons.exit_to_app, size: 22),
+                onTap: () => Navigator.pop(context)),
           ],
         ),
       ),
+      body: TabBarView(
+        controller: _controller,
+        children: <Widget>[
+          Icon(Icons.home, color: Colors.black12, size: 128.0),
+          Icon(Icons.notifications, color: Colors.black12, size: 128.0),
+          Icon(Icons.person, color: Colors.black12, size: 128.0),
+        ],
+      ),
+      bottomNavigationBar: Material(
+        color: Colors.yellow,
+        child: TabBar(
+          controller: _controller,
+          unselectedLabelColor: Colors.black38,
+          indicatorColor: Colors.black54,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorWeight: 1.0,
+          tabs: <Widget>[
+            Tab(icon: Icon(Icons.home)),
+            Tab(icon: Icon(Icons.notifications)),
+            Tab(icon: Icon(Icons.person)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildAppBar() {
+    return AppBar(
+      title: Text('APE'),
+      centerTitle: false,
+      elevation: 0.0,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search),
+          tooltip: 'Search',
+          onPressed: () => debugPrint('search button press.'),
+        ),
+        IconButton(
+          icon: Icon(Icons.more_horiz),
+          tooltip: 'More',
+          onPressed: () => debugPrint('more button press.'),
+        ),
+      ],
     );
   }
 }
