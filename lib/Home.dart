@@ -61,21 +61,30 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
         PopupMenuButton(
           icon: Icon(Icons.more_horiz),
           tooltip: 'More',
+          offset: Offset(10, 55),
           onSelected: (String value) => debugPrint(value),
-          itemBuilder: (context) => <PopupMenuItem<String>>[
+          itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
                 PopupMenuItem(
                   value: "Search",
                   child: ListTile(
-                      title: Text('Search Button', textAlign: TextAlign.right),
-                      trailing: Icon(Icons.search, size: 22),
-                      onTap: () => Navigator.pop(context)),
+                    title: Text('Search', textAlign: TextAlign.right),
+                    trailing: Icon(Icons.search, size: 22),
+                    onTap: () {
+                      Navigator.pop(context);
+                      debugPrint('search button press.');
+                    },
+                  ),
                 ),
                 PopupMenuItem(
                   value: "Settings",
                   child: ListTile(
-                      title: Text('Setting Button', textAlign: TextAlign.right),
-                      trailing: Icon(Icons.settings, size: 22),
-                      onTap: () => Navigator.pop(context)),
+                    title: Text('Setting', textAlign: TextAlign.right),
+                    trailing: Icon(Icons.settings, size: 22),
+                    onTap: () {
+                      Navigator.pop(context);
+                      debugPrint('settings button press.');
+                    },
+                  ),
                 ),
               ],
         ),
