@@ -70,7 +70,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     title: Text('Search', textAlign: TextAlign.right),
                     trailing: Icon(Icons.search, size: 22),
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.popAndPushNamed(context, '/searcher');
                       debugPrint('search button press.');
                     },
                   ),
