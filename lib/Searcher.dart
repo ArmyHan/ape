@@ -9,10 +9,29 @@ class SearcherState extends State<Searcher> {
   final TextEditingController _controller = new TextEditingController();
 
   List<String> _list;
+  bool _searching;
+  String _searchContent;
+
+  SearcherState() {
+    _controller.addListener(() {
+      if (_controller.text.isEmpty) {
+        setState(() {
+          _searching = false;
+          _searchContent = "";
+        });
+      } else {
+        setState(() {
+          _searching = true;
+          _searchContent = _controller.text;
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    _searching = false;
     initList();
   }
 
@@ -40,32 +59,51 @@ class SearcherState extends State<Searcher> {
           controller: _controller,
           autofocus: true,
           cursorWidth: 1.5,
-          cursorRadius: Radius.circular(40),
+          cursorRadius: Radius.circular(1),
           style: TextStyle(color: Colors.black),
           cursorColor: Colors.grey[600],
           decoration: InputDecoration(
             fillColor: Colors.yellow[200],
             filled: true,
-            border: InputBorder.none,
-            prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+            border: OutlineInputBorder(
+              gapPadding: 10,
+              borderRadius: BorderRadius.all(Radius.circular(7.0)),
+            ),
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            suffixIcon: _searching
+                ? IconButton(
+                    iconSize: 15,
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.grey[600],
+                    ),
+                    onPressed: () => _controller.clear(),
+                  )
+                : null,
             hintText: "Search...",
             hintStyle: TextStyle(color: Colors.grey[500]),
           ),
         ),
-        actions: <Widget>[
-          MaterialButton(
-            child: Text(
-              '搜索',
-              style: TextStyle(color: Colors.grey[600], fontSize: 17, fontWeight: FontWeight.w100),
-            ),
-            onPressed: () => debugPrint('search button press.'),
-          )
-        ],
       ),
       body: new ListView(
         padding: new EdgeInsets.symmetric(vertical: 8.0),
-        children: _list.map((item) => ListTile(title: Text(item, textAlign: TextAlign.right))).toList(),
+        children: _searching ? _buildFilterItem() : _buildAllItem(),
       ),
     );
+  }
+
+  _buildAllItem() {
+    return _list.map((item) => ListTile(title: Text(item, textAlign: TextAlign.right))).toList();
+  }
+
+  _buildFilterItem() {
+    List<String> _remainderList = List();
+    for (int i = 0; i < _list.length; i++) {
+      String name = _list.elementAt(i);
+      if (name.toLowerCase().contains(_searchContent.toLowerCase())) {
+        _remainderList.add(name);
+      }
+    }
+    return _remainderList.map((item) => ListTile(title: Text(item, textAlign: TextAlign.right))).toList();
   }
 }
