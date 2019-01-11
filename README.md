@@ -1,8 +1,7 @@
 # ape
 
-包含登录、注销、底部导航、侧边栏等基本功能，请发挥你的想象力使他进化。
+flutter实现搜索功能。
 
-## Getting Started
 
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+
+![avatar](https://github.com/leyan95/ape/blob/master/assets/ape.gif?raw=true)
